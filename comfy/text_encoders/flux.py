@@ -204,9 +204,9 @@ class Flux3Tokenizer(comfy.text_encoders.qwen3vl.Qwen3VLTokenizer):
     def __init__(self, embedding_directory=None, tokenizer_data={}):
         super().__init__(embedding_directory=embedding_directory, tokenizer_data=tokenizer_data, model_type="qwen3vl_4b")
 
-    def tokenize_with_weights(self, text, return_word_ids=False, thinking=True, **kwargs):
-        # instruct template without a think block, right padded to a multiple of 80 tokens
-        tokens = super().tokenize_with_weights(text, return_word_ids=return_word_ids, thinking=thinking, **kwargs)
+    def tokenize_with_weights(self, text, return_word_ids=False, **kwargs):
+        # instruct template, right padded to a multiple of 80 tokens
+        tokens = super().tokenize_with_weights(text, return_word_ids=return_word_ids, **kwargs)
         pad = (151643, 1.0, 0) if return_word_ids else (151643, 1.0)
         for batch in tokens[self.clip_name]:
             batch.extend([pad] * (-len(batch) % 80))
